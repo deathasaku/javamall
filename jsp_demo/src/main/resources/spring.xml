@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	<!-- 使用ANNOTATION -->
+	<context:annotation-config />
+	<!--自動掃瞄所有註解路徑 -->
+	<context:component-scan
+		base-package="com.deathasaku.dao,com.deathasaku.service" />
+		
+
+
+	<!--數據源配置 -->  
+ <bean id="dataSource"  
+        class="com.mchange.v2.c3p0.ComboPooledDataSource"  
+        destroy-method="close">  
+        <property name="driverClass">  
+            <value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>  
+<!--             <value>com.mysql.jdbc.Driver</value>   -->
+        </property>  
+        <property name="jdbcUrl">  
+            <value>jdbc:sqlserver://deathasaku.database.windows.net:1433;database=test2;user=deathasaku@deathasaku;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</value>  
+<!--             <value>jdbc:mysql://localhost:3306/test?useSSL=false&amp;serverTimezone=UTC</value>   -->
+        </property>  
+        <property name="user">  
+            <value>deathasaku</value>  
+<!--             <value>root</value>   -->
+        </property>  
+        <property name="password">  
+            <value>Do!123456</value>  
+        </property>  
+   
+ <!--連接池中保留的最小連接數。-->  
+        <property name="minPoolSize">  
+            <value>5</value>  
+        </property>  
+   
+ <!--連接池中保留的最大連接數。Default: 15 -->  
+        <property name="maxPoolSize">  
+            <value>30</value>  
+        </property>  
+   
+<!--初始化時獲取的連接數，取值應在minPoolSize與maxPoolSize之間。Default: 3 -->  
+        <property name="initialPoolSize">  
+            <value>10</value>  
+        </property>  
+   
+ <!--最大空閒時間,60秒內未使用則連接被丟棄。若為0則永不丟棄。Default: 0 -->  
+        <property name="maxIdleTime">  
+            <value>60</value>  
+        </property>  
+   
+ <!--當連接池中的連接耗盡的時候c3p0一次同時獲取的連接數。Default: 3 -->  
+        <property name="acquireIncrement">  
+            <value>5</value>  
+        </property>  
+   
+ <!--JDBC的標準參數，用以控制數據源內加載的PreparedStatements數量。但由於預緩存的statements  
+  屬於單個connection而不是整個連接池。所以設置這個參數需要考慮到多方面的因素。  
+  如果maxStatements與maxStatementsPerConnection均為0，則緩存被關閉。Default: 0-->  
+        <property name="maxStatements">  
+            <value>0</value>  
+        </property>  
+   
+ <!--每60秒檢查所有連接池中的空閒連接。Default: 0 -->  
+        <property name="idleConnectionTestPeriod">  
+            <value>60</value>  
+        </property>  
+   
+ <!--定義在從數據庫獲取新連接失敗後重複嘗試的次數。Default: 30 -->  
+        <property name="acquireRetryAttempts">  
+            <value>30</value>  
+        </property>  
+   
+ <!--獲取連接失敗將會引起所有等待連接池來獲取連接的線程拋出異常。但是數據源仍有效  
+  保留，並在下次調用getConnection()的時候繼續嘗試獲取連接。如果設為true，那麼在嘗試  
+  獲取連接失敗後該數據源將申明已斷開並永久關閉。Default: false-->  
+        <property name="breakAfterAcquireFailure">  
+            <value>true</value>  
+        </property>  
+   
+ <!--因性能消耗大請只在需要的時候使用它。如果設為true那麼在每個connection提交的  
+  時候都將校驗其有效性。建議使用idleConnectionTestPeriod或automaticTestTable  
+  等方法來提升連接測試的性能。Default: false -->  
+        <property name="testConnectionOnCheckout">  
+            <value>false</value>  
+        </property>  
+    </bean> 
+    
+
+
+
+
+	<!--SessionFactory配置 -->
+<!-- 	<bean id="sessionFactory" -->
+<!-- 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"> -->
+ <!-- 		<property name="dataSource" ref="dataSource" />  --> 
+<!-- 		<property name="hibernateProperties"> -->
+<!-- 			<props> -->
+<!-- 				以下是Hibernate的基礎配置 -->
+<!-- 				是否自動更新表格 -->
+<!-- 				<prop key="hibernate.hbm2ddl.auto">update</prop> -->
+<!-- 				Hibernate方言配置 -->
+<!-- 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop> -->
+<!-- 				是否顯示SQL語句 -->
+<!-- 				<prop key="hibernate.show_sql">true</prop> -->
+<!-- 				是否使用格式化SQL語句 -->
+<!-- 				<prop key="hibernate.format_sql">true</prop> -->
+<!-- 				在格式化的SQL語句的基礎之上加強可讀性 -->
+<!-- 				<prop key="hibernate.use_sql_comments">true</prop> -->
+
+<!-- 				<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop> -->
+<!-- 				<prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/test?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf8</prop> -->
+<!-- 				<prop key="hibernate.connection.username">root</prop> -->
+<!-- 				<prop key="hibernate.connection.password">aa123456</prop> -->
+
+<!-- 				以下是Hibernate的c3p0配置 -->
+<!-- 				最大連接數 -->
+<!-- 				<prop key="hibernate.c3p0.max_size">20</prop> -->
+<!-- 				最小連接數 -->
+<!-- 				<prop key="hibernate.c3p0.min_size">5</prop> -->
+<!-- 				獲得連接的超時時間,如果超過這個時間,會拋出異常，單位毫秒 -->
+<!-- 				<prop key="hibernate.c3p0.timeout">1000</prop> -->
+<!-- 				最大的PreparedStatement的數量 -->
+<!-- 				<prop key="hibernate.c3p0.max_statements">50</prop> -->
+<!-- 				每隔120秒檢查連接池裡的空閒連接 ，單位是秒 -->
+<!-- 				<prop key="hibernate.c3p0.idle_test_period">120</prop> -->
+<!-- 				當連接池裡面的連接用完的時候，C3P0一下獲取的新的連接數 -->
+<!-- 				<prop key="hibernate.c3p0.acquire_increment">2</prop> -->
+<!-- 				每次都驗證連接是否可用 -->
+<!-- 				<prop key="hibernate.c3p0.validate">true</prop> -->
+<!-- 			</props> -->
+<!-- 		</property> -->
+ 		<!--掃瞄的實體類路徑配置 --> 
+<!-- 		<property name="packagesToScan" value="com.deathasaku" /> -->
+<!-- 	</bean> -->
+	<!-- 我就是要用JAP啦 -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
+        <property name="packagesToScan" value="com.deathasaku.entity"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+    
+        <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+<!--         <property name="databasePlatform" value="org.hibernate.dialect.MySQL8Dialect"/> -->
+        <property name="databasePlatform" value="org.hibernate.dialect.SQLServer2008Dialect"/>
+    </bean>
+
+    <!--jpa事務管理 這邊屬性寄售ENTITYMANAGERFACTORY啦-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+     <!--springdataJpa配置 這邊設定會去幫有繼承 REPOSITORY的介面實作代理類-->
+    <jpa:repositories base-package="com.deathasaku.dao" transaction-manager-ref="transactionManager"/>
+    <!-- JPA事務配置因為都是 PROXY TARGET 所以要開啟可以對代理的管理事務吧? -->
+     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+	<!--Hibernate事務配置  注意他的CLASS是HIBERNATE的-->
+<!-- 	<bean id="transactionManager" -->
+<!-- 		class="org.springframework.orm.hibernate5.HibernateTransactionManager" -->
+<!-- 		p:sessionFactory-ref="sessionFactory"> -->
+<!-- 	</bean> -->
+
+
+
+	<!--HB的 事務配置 -->
+<!-- 	<tx:annotation-driven -->
+<!-- 		transaction-manager="transactionManager" /> -->
+
+
+
+
+<!-- web.xml中shiro的filter對應的bean -->
+<!-- Shiro 的Web過濾器 -->
+<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    <property name="securityManager" ref="securityManager" />
+    <!-- loginUrl認證提交地址，如果沒有認證將會請求此地址進行認證，請求此地址將由formAuthenticationFilter進行表單認證 -->
+    
+    <property name="loginUrl" value="/admin/login" />
+    <!-- 認證成功統一跳轉到first.action，建議不配置，shiro認證成功自動到上一個請求路徑 -->
+    <property name="successUrl" value="/admin/index"/>
+    <!-- 通過unauthorizedUrl指定沒有權限操作時跳轉頁面-->
+    <property name="unauthorizedUrl" value="/admin/123" />
+    <!-- 自定義filter配置 -->
+       <!-- 將自定義 的FormAuthenticationFilter注入shiroFilter中-->
+       
+     <property name="filters">
+        <map>
+<!--               <entry key="logout" value-ref="logoutFilter" />   -->
+            <entry key="authc" value-ref="formAuthenticationFilter" />
+            <entry key="storeuser" value-ref="userformAuthenticationFilter" />
+        </map>
+    </property>
+    
+    <!-- 過慮器鏈定義，從上向下順序執行，一般將/**放在最下邊 -->
+    <property name="filterChainDefinitions">
+        <value>
+       	
+            <!-- 對靜態資源設置匿名訪問 -->
+           
+            /**/upload/** = anon
+            /**/js/** = anon
+            /**/dist/** = anon
+            /**/plugins/** = anon
+            /**/testimg/** = anon
+<!--             /admin/login =anon -->
+<!--              /jsp_demo/admin/login =anon -->
+<!--             /jsp_demo/admin/login.do=anon -->
+<!-- 			/admin/login.do =anon -->
+            <!-- 驗證碼，可匿名訪問 -->
+<!--             /validatecode.jsp = anon -->
+
+            <!-- 請求 logout.action地址，shiro去清除session-->
+<!--             /admin/logout.action = logout -->
+            /admin/forgot-password = anon
+            /admin/remember = anon
+            /admin/recover-password =anon
+            /admin/resetpwd/** =anon
+            /admin/register =anon
+            <!--商品查詢需要商品查詢權限 ，取消url攔截配置，使用註解授權方式 -->
+            <!-- /items/queryItems.action = perms[item:query]
+            /items/editItems.action = perms[item:edit] -->
+            <!-- 配置記住我或認證通過可以訪問的地址 -->
+            /index.jsp  = user
+            /first.action = user
+            /welcome.jsp = user
+            
+<!--             /** = authc -->
+            <!-- /** = authc 所有url都必須認證通過才可以訪問-->
+            
+<!--             前台登陸驗證 -->
+           /store/**=anon <!-- storeuser -->
+<!--            /ws=anon storeuser -->
+              <!--  所有url都可以匿名訪問-->
+<!--             /** = anon     -->
+            /admin/** = authc    
+
+        </value>
+    </property>
+</bean>
+<!-- LOGOUT FILTER -->
+
+<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">  
+   <property name="redirectUrl" value="/admin/login" />  
+</bean>  
+
+<!-- securityManager安全管理器 -->
+<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+
+  <property name="authenticator" ref="authenticator"></property>
+    <!-- 注入緩存管理器 先拿掉-->
+<!--     <property name="cacheManager" ref="cacheManager"/> -->
+    <!-- 注入session管理器 -->
+    <property name="sessionManager" ref="sessionManager" />
+    <!-- 記住我 -->
+    <property name="rememberMeManager" ref="rememberMeManager"/>    
+</bean>
+
+   <!-- 配置多個Realm -->
+    <bean id="authenticator" class="com.deathasaku.shiro.CustomModularRealmAuthenticator">
+
+        <!--驗證的時候，是用迭代器，所以可以認為驗證的順序就是這個 list 的順序-->
+        <property name="realms">
+            <list>
+                <ref bean="EmployeeRealm"/>
+                <ref bean="UserRealm"/>
+            </list>
+        </property>
+        <property name="authenticationStrategy">
+        
+        
+
+            <!--所有 realm 認證通過才算登錄成功-->
+            <!--<bean id="authenticationStrategy" class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"/>-->
+            <!--驗證某個 realm 成功後直接返回，不會驗證後面的 realm 了-->
+            <!--<bean id="authenticationStrategy" class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"/>-->
+            <!--所有的 realm 都會驗證，其中一個成功，也會繼續驗證後面的 realm，最後返回成功-->
+            <bean id="authenticationStrategy" class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"/>
+        </property>
+    </bean>
+
+
+
+<!-- realm -->
+<bean id="EmployeeRealm" class="com.deathasaku.shiro.EmployeeRealm">
+    <!-- 將憑證匹配器設置到realm中，realm按照憑證匹配器的要求進行散列 -->
+<!--     <property name="credentialsMatcher" ref="credentialsMatcher"/> -->
+</bean>
+
+<bean id="UserRealm" class="com.deathasaku.shiro.UserRealm">
+    <!-- 將憑證匹配器設置到realm中，realm按照憑證匹配器的要求進行散列 -->
+<!--     <property name="credentialsMatcher" ref="credentialsMatcher"/> -->
+</bean>
+
+
+<!-- 憑證匹配器 好像不用耶 我又不加密 ㄏㄏ -->
+<!-- <bean id="credentialsMatcher" -->
+<!--     class="org.apache.shiro.authc.credential.HashedCredentialsMatcher"> -->
+<!--     <property name="hashAlgorithmName" value="md5" /> -->
+<!--     <property name="hashIterations" value="1" /> -->
+<!-- </bean> -->
+
+<!-- 緩存管理器 -->
+<!-- 簡單來說在磁碟下面建立一個文件 會把緩存存到裡面 這是一種本地緩存 用來 避免對數據庫造成太大的負荷 -->
+<!--  但是我們又沒差 所以也下去 -->
+<!-- <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager"> -->
+<!--     <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml"/> -->
+<!-- </bean> -->
+
+
+<!-- 會話管理器 -->
+<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+ <property name="sessionIdUrlRewritingEnabled" value="false" />
+     <!-- session的失效時長，單位毫秒 -->
+     <property name="globalSessionTimeout" value="600000"/>
+     <!-- 刪除失效的session -->
+     <property name="deleteInvalidSessions" value="true"/>
+</bean>
+
+
+<!-- 自定義form認證過慮器 -->
+<!-- 基於Form表單的身份驗證過濾器，不配置將也會註冊此過慮器，表單中的用戶賬號、密碼及loginurl將採用默認值，建議配置 -->
+<!-- 看起來用不到 這是驗證碼再用的 哪尼 我們好像要用GOOGLE驗證? 之後再處理  -->
+<!-- 確定要使用 要實作這的驗證發訪 然後 事先驗證GOOGLE機器人  -->
+<bean id="formAuthenticationFilter" 
+    class="com.deathasaku.shiro.EmployeeFormAuthenticationFilter">
+<!--     表單中賬號的input名稱 -->
+    <property name="usernameParam" value="username" />
+<!--     表單中密碼的input名稱 -->
+    <property name="passwordParam" value="password" />
+<!--     記住我input的名稱 -->
+    <property name="rememberMeParam" value="rememberMe"/>
+</bean>
+
+<bean id="userformAuthenticationFilter" 
+    class="com.deathasaku.shiro.UserFormAuthenticationFilter">
+<!--     表單中賬號的input名稱 -->
+    <property name="usernameParam" value="username" />
+<!--     表單中密碼的input名稱 -->
+    <property name="passwordParam" value="password" />
+<!--     記住我input的名稱 -->
+    <property name="rememberMeParam" value="rememberMe"/>
+    <!-- 登陸葉面跟成功跳轉位置 -->
+    	<property name="loginUrl" value="/store/login" />
+		<property name="successUrl" value="/store/my-account" />
+</bean>
+
+
+<!-- rememberMeManager管理器，寫cookie，取出cookie生成用戶信息 -->
+<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+    <property name="cookie" ref="rememberMeCookie" />
+</bean>
+
+<!-- 記住我cookie -->
+<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+    <!-- rememberMe是cookie的名字 -->
+    <constructor-arg value="rememberMe" />
+    <!-- 記住我cookie生效時間30天 -->
+    <property name="maxAge" value="2592000" />
+</bean>
+
+</beans>

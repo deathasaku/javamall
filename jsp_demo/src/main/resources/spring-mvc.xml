@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!--掃瞄註解配置-->
+    <context:annotation-config/>
+    <!--掃瞄註解了@Controller配置的類-->
+    <context:component-scan base-package="com.deathasaku.controller,com.deathasaku.restcontroller"/>
+     <context:component-scan base-package="com.deathasaku.websocket"/>
+
+    <!-- 註解驅動  -->
+    
+    <mvc:annotation-driven/>
+<!--       <mvc:annotation-driven> -->
+<!--         <mvc:message-converters> -->
+<!--             Use the HibernateAware mapper instead of the default -->
+<!--             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"> -->
+<!--                 <property name="objectMapper"> -->
+<!--                     <bean class="com.deathasaku.util.HibernateAwareObjectMapper" /> -->
+<!--                 </property> -->
+<!--             </bean> -->
+<!--         </mvc:message-converters> -->
+<!--     </mvc:annotation-driven> -->
+	<!-- 資源映射  -->
+	<!-- 注意順序 他這跟SERVLET那些不一樣 不會自動匹配 他的順序是這 上下加載來啟動的 肏機掰樂 -->
+<mvc:resources location="file:/upload/" mapping="/admin/upload/**"/>
+<mvc:resources location="file:/upload/" mapping="/upload/**"/>
+<mvc:resources location="/WEB-INF/classes/static/admin/" mapping="/admin/**"/>
+<mvc:resources location="/WEB-INF/classes/static/assets/" mapping="/assets/**"/>
+
+<bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<!-- 設置上傳文件的最大尺寸為5MB -->
+	<property name="maxUploadSize">
+		<value>5242880</value>
+	</property>
+	<!-- 這裡設置默認的文件編碼為UTF-8，必須與用戶JSP的默認編碼一致   -->
+	<property name="defaultEncoding">
+		<value>UTF-8</value>
+	</property>
+	<!-- 文件上傳臨時目錄，上傳完成後，就會將臨時文件刪除   -->
+	<property name="uploadTempDir">
+		<value>upload/temp</value>
+	</property>
+</bean>
+
+
+ <!-- ========================================shrio=========================================================== -->
+    <!-- 開啟aop，對類代理 -->
+    <aop:config proxy-target-class="true"></aop:config>
+    <!-- 開啟shiro註解支持 -->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager" />
+    </bean>
+    
+<!--  MVC 視圖解析 -->	
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>
