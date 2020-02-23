@@ -28,7 +28,7 @@
 <!--             <value>com.mysql.jdbc.Driver</value>   -->
         </property>  
         <property name="jdbcUrl">  
-            <value>jdbc:sqlserver://deathasaku.database.windows.net:1433;database=test2;user=deathasaku@deathasaku;password={your_password_here};encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</value>  
+           <!--         不給看  -->
 <!--             <value>jdbc:mysql://localhost:3306/test?useSSL=false&amp;serverTimezone=UTC</value>   -->
         </property>  
         <property name="user">  
@@ -36,7 +36,7 @@
 <!--             <value>root</value>   -->
         </property>  
         <property name="password">  
-            <value>Do!123456</value>  
+          <!--         不給看  -->
         </property>  
    
  <!--連接池中保留的最小連接數。-->  
