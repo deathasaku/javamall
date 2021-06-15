@@ -47,7 +47,6 @@ import com.deathasaku.util.UploadUtil;
 @Controller
 @RequestMapping("/admin")
 public class Admin {
-
 	EmployeeService employeeService;
 	PropertyService propertyService;
 	ProductService productService;
