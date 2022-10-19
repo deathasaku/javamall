@@ -11,7 +11,7 @@
   	<properties>
   		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<jackson.version>2.10.1</jackson.version>
+		<jackson.version>2.13.4.1</jackson.version>
 		<hibernate.version>5.4.4.Final</hibernate.version>
 		<spring.version>5.2.1.RELEASE</spring.version>
 		<shiro.version>1.4.2</shiro.version>
